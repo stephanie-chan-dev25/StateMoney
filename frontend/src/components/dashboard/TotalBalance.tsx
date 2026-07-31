@@ -1,12 +1,13 @@
+import "./TotalBalance.css"
 type TotalBalanceProps = {
   balance: number
 }
 
 function TotalBalance({ balance }: TotalBalanceProps) {
   return (
-    <section>
+    <section className="total-balance">
       <h3>💰 Solde total</h3>
-      <p>{balance} Ar</p>
+      <p>{balance.toLocaleString("fr-FR")} Ar</p>
     </section>
   )
 }
