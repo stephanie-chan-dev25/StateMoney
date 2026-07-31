@@ -1,12 +1,13 @@
+import "./MonthlyExpenses.css"
 type MonthlyExpensesProps = {
   amount: number
 }
 
 function MonthlyExpenses({ amount }: MonthlyExpensesProps) {
   return (
-    <section>
+    <section className="monthly-expenses">
       <h3>📤 Dépenses du mois</h3>
-      <p>{amount} Ar</p>
+      <p>{amount.toLocaleString("fr-FR")} Ar</p>
     </section>
   )
 }
