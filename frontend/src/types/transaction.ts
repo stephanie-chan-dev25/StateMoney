@@ -1,8 +1,11 @@
-export type TransactionType = "revenu" | "dépense"
+export type TransactionType = "income" | "expense"
 
-export type Transaction = {
+export interface Transaction {
   id: number
-  description: string
   amount: number
+  date: Date
   type: TransactionType
+  category: string
+  wallet: string
+  description: string
 }

@@ -1,12 +1,17 @@
 import type { Transaction } from "../../types/transaction"
 import "./TransactionItem.css"
+type TransactionItemProps = {
+  description: string
+  amount: number
+  type: "income" | "expense"
+}
 function TransactionItem({
   description,
   amount,
   type,
-}: Transaction) {
+}: TransactionItemProps) {
 
-  const isIncome = type === "revenu"
+  const isIncome = type === "income"
 
   return (
   <div className={isIncome ? "income" : "expense"}>
@@ -16,7 +21,7 @@ function TransactionItem({
       {isIncome ? "+" : "-"} {amount} Ar
     </p>
 
-    <p>{type}</p>
+    <p>{isIncome ? "Revenu" : "Dépense"}</p>
   </div>
 )
 }
