@@ -9,21 +9,21 @@ import {
   calculateExpenses,
   calculateSavings,
   calculateBalance,
+  filterTransactionsByMonth,
 } from "../../utils/transactionCalculations"
 import "./Dashboard.css"
 import { calculateIncomeByCategory } from "../../utils/incomeCalculations"
-import { filterTransactionsByMonth } from "../../utils/transactionCalculations"
 import { calculateExpensesByCategory } from "../../utils/expenseCalculations"
-const monthlyTransactions = filterTransactionsByMonth(
-  transactions,
-  7,
-  2026
-)
 type DashboardProps = {
   title: string
 }
 
 function Dashboard({ title }: DashboardProps) {
+  const monthlyTransactions = filterTransactionsByMonth(
+  transactions,
+  7,
+  2026
+  )
   const incomeByCategory = calculateIncomeByCategory(monthlyTransactions)
   const expensesByCategory = calculateExpensesByCategory(monthlyTransactions)
   const totalBalance = calculateBalance(transactions)
@@ -39,13 +39,13 @@ function Dashboard({ title }: DashboardProps) {
 
       <div className="dashboard-stats">
         <MonthlyIncome
-        amount={monthlyIncome}
-        incomes={incomeByCategory}
+          amount={monthlyIncome}
+          incomes={incomeByCategory}
         />
         
         <MonthlyExpenses
-        amount={monthlyExpenses}
-        expenses={expensesByCategory}
+          amount={monthlyExpenses}
+          expenses={expensesByCategory}
         />
         
         <MonthlySavings amount={monthlySavings} />
