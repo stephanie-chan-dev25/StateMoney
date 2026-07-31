@@ -19,10 +19,13 @@ type DashboardProps = {
 }
 
 function Dashboard({ title }: DashboardProps) {
+  const currentDate = new Date()
+  const currentMonth = currentDate.getMonth()
+  const currentYear = currentDate.getFullYear()
   const monthlyTransactions = filterTransactionsByMonth(
   transactions,
-  7,
-  2026
+  currentMonth,
+  currentYear
   )
   const incomeByCategory = calculateIncomeByCategory(monthlyTransactions)
   const expensesByCategory = calculateExpensesByCategory(monthlyTransactions)
