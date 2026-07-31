@@ -6,6 +6,9 @@ type TransactionItemProps = {
 function getTransactionTypeLabel(type: "income" | "expense") {
   return type === "income" ? "Revenu" : "Dépense"
 }
+function getTransactionTypeClass(type: "income" | "expense") {
+  return type === "income" ? "income" : "expense"
+}
 function TransactionItem({
   transaction,
 }: TransactionItemProps) {
@@ -13,7 +16,7 @@ function TransactionItem({
   const isIncome = type === "income"
 
   return (
-  <div className={isIncome ? "income" : "expense"}>
+  <div className={getTransactionTypeClass(type)}>
     <p>{description}</p>
 
     <p>{category} • {wallet}</p>
