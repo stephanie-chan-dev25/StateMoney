@@ -1,5 +1,20 @@
 import type { Transaction } from "../types/transaction"
 
+export function filterTransactionsByMonth(
+  transactions: Transaction[],
+  month: number,
+  year: number
+) {
+  return transactions.filter((transaction) => {
+    const transactionDate = transaction.date
+
+    return (
+      transactionDate.getMonth() === month &&
+      transactionDate.getFullYear() === year
+    )
+  })
+}
+
 export function calculateIncome(transactions: Transaction[]) {
   return transactions
     .filter((transaction) => transaction.type === "income")
@@ -23,3 +38,4 @@ export function calculateBalance(transactions: Transaction[]) {
       : total - transaction.amount
   }, 0)
 }
+
