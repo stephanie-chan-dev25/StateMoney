@@ -1,12 +1,13 @@
+import "./MonthlyIncome.css"
 type MonthlyIncomeProps = {
   amount: number
 }
 
 function MonthlyIncome({ amount }: MonthlyIncomeProps) {
   return (
-    <section>
+    <section className="monthly-income">
       <h3>📥 Revenus du mois</h3>
-      <p>{amount} Ar</p>
+      <p>{amount.toLocaleString("fr-FR")} Ar</p>
     </section>
   )
 }
