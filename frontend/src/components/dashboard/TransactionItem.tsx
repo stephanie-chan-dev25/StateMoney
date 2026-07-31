@@ -9,7 +9,7 @@ function getTransactionTypeLabel(type: "income" | "expense") {
 function TransactionItem({
   transaction,
 }: TransactionItemProps) {
-  const { description, amount, type, date } = transaction
+  const { description, amount, type, date, category, wallet } = transaction 
   const isIncome = type === "income"
 
   return (
@@ -17,7 +17,8 @@ function TransactionItem({
     <p>{description}</p>
 
     <p>{date.toLocaleDateString("fr-FR")}</p>
-      
+    <p>{category}</p>
+    <p>{wallet}</p>
     <p>
       {isIncome ? "+" : "-"} {amount} Ar
     </p>
