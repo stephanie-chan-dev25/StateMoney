@@ -17,13 +17,13 @@ function TransactionItem({
     <p>{description}</p>
 
     <p>{category} • {wallet}</p>
-      
+
     <p>{date.toLocaleDateString("fr-FR")}</p>
-      
+
     <p>
-      {isIncome ? "+" : "-"} {amount} Ar
+      {isIncome ? "+" : "-"} {amount.toLocaleString("fr-FR")} Ar
     </p>
-      
+
     <p>{getTransactionTypeLabel(type)}</p>
   </div>
 )
