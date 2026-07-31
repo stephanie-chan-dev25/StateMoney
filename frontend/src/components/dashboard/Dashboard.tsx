@@ -4,17 +4,22 @@ import MonthlySavings from "./MonthlySavings"
 import TotalBalance from "./TotalBalance"
 import TransactionHistory from "./TransactionHistory"
 import { transactions } from "../../data/transactions"
-import { dashboardStats } from "../../data/dashboardStats"
+import {
+  calculateIncome,
+  calculateExpenses,
+  calculateSavings,
+  calculateBalance,
+} from "../../utils/transactionCalculations"
 import "./Dashboard.css"
 type DashboardProps = {
   title: string
 }
 
 function Dashboard({ title }: DashboardProps) {
-  const totalBalance = dashboardStats.totalBalance
-  const monthlyIncome = dashboardStats.monthlyIncome
-  const monthlyExpenses = dashboardStats.monthlyExpenses
-  const monthlySavings = monthlyIncome - monthlyExpenses
+  const totalBalance = calculateBalance(transactions)
+  const monthlyIncome = calculateIncome(transactions)
+  const monthlyExpenses = calculateExpenses(transactions)
+  const monthlySavings = calculateSavings(monthlyIncome, monthlyExpenses)
   
   return (
     <section className="dashboard">
