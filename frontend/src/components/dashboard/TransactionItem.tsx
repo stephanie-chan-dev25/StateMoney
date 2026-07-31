@@ -16,9 +16,10 @@ function TransactionItem({
   <div className={isIncome ? "income" : "expense"}>
     <p>{description}</p>
 
+    <p>{category} • {wallet}</p>
+      
     <p>{date.toLocaleDateString("fr-FR")}</p>
-    <p>{category}</p>
-    <p>{wallet}</p>
+      
     <p>
       {isIncome ? "+" : "-"} {amount} Ar
     </p>
