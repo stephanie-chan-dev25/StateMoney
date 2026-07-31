@@ -22,11 +22,13 @@ function Dashboard({ title }: DashboardProps) {
 
       <TotalBalance balance={totalBalance} />
 
-      <MonthlyIncome amount={monthlyIncome} />
-
-      <MonthlyExpenses amount={monthlyExpenses} />
-
-      <MonthlySavings amount={monthlySavings} />
+      <div className="dashboard-stats">
+        <MonthlyIncome amount={monthlyIncome} />
+        
+        <MonthlyExpenses amount={monthlyExpenses} />
+        
+        <MonthlySavings amount={monthlySavings} />
+      </div>
 
       <TransactionHistory transactions={transactions} />
     </section>
