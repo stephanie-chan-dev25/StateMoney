@@ -9,6 +9,9 @@ function getTransactionTypeLabel(type: "income" | "expense") {
 function getTransactionTypeClass(type: "income" | "expense") {
   return type === "income" ? "income" : "expense"
 }
+function formatTransactionAmount(amount: number, type: "income" | "expense") {
+  return `${type === "income" ? "+" : "-"} ${amount.toLocaleString("fr-FR")} Ar`
+}
 function TransactionItem({
   transaction,
 }: TransactionItemProps) {
@@ -23,9 +26,7 @@ function TransactionItem({
 
     <p>{date.toLocaleDateString("fr-FR")}</p>
 
-    <p>
-      {isIncome ? "+" : "-"} {amount.toLocaleString("fr-FR")} Ar
-    </p>
+    <p>{formatTransactionAmount(amount, type)}</p>
 
     <p>{getTransactionTypeLabel(type)}</p>
   </div>
