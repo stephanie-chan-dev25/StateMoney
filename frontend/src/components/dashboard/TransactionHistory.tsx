@@ -12,10 +12,8 @@ function TransactionHistory({ transactions }: TransactionHistoryProps) {
 
       {transactions.map((transaction) => (
         <TransactionItem
-          key={transaction.id}
-          description={transaction.description}
-          amount={transaction.amount}
-          type={transaction.type}
+        key={transaction.id}
+        transaction={transaction}
         />
       ))}
     </section>
