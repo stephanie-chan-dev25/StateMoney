@@ -11,12 +11,27 @@ function TransactionHistory({ transactions }: TransactionHistoryProps) {
     <section className="transaction-history">
       <h3>📜 Historique des transactions</h3>
 
-      {transactions.map((transaction) => (
-        <TransactionItem
-        key={transaction.id}
-        transaction={transaction}
-        />
-      ))}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Catégorie</th>
+            <th>Portefeuille</th>
+            <th>Type</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          {transactions.map((transaction) => (
+            <TransactionItem
+              key={transaction.id}
+              transaction={transaction}
+            />
+          ))}
+        </tbody>
+      </table>
     </section>
   )
 }

@@ -1,13 +1,7 @@
 .income {
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 2px solid green;
-  border-radius: 8px;
+  color: green;
 }
 
 .expense {
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 2px solid red;
-  border-radius: 8px;
+  color: red;
 }

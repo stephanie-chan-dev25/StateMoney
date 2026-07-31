@@ -19,18 +19,15 @@ function TransactionItem({
   const isIncome = type === "income"
 
   return (
-  <div className={getTransactionTypeClass(type)}>
-    <p>{description}</p>
-
-    <p>{category} • {wallet}</p>
-
-    <p>{date.toLocaleDateString("fr-FR")}</p>
-
-    <p>{formatTransactionAmount(amount, type)}</p>
-
-    <p>{getTransactionTypeLabel(type)}</p>
-  </div>
-)
+  <tr className={getTransactionTypeClass(type)}>
+    <td>{date.toLocaleDateString("fr-FR")}</td>
+    <td>{description}</td>
+    <td>{category}</td>
+    <td>{wallet}</td>
+    <td>{getTransactionTypeLabel(type)}</td>
+    <td>{formatTransactionAmount(amount, type)}</td>
+  </tr>
+  )
 }
 
 export default TransactionItem
