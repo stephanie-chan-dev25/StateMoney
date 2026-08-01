@@ -21,9 +21,4 @@ export const categories: Category[] = [
     name: "Transport",
     type: "expense",
   },
-  {
-    id: 5,
-    name: "Loisir",
-    type: "expense",
-  },
 ]
