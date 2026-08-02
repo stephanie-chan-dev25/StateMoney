@@ -27,6 +27,10 @@ function Dashboard({ title }: DashboardProps) {
   const [transactions, setTransactions] = useState(
     initialTransactions
   )
+  function handleCloseModal() {
+    setIsModalOpen(false)
+    setEditingTransaction(null)
+  }
   function handleAddTransaction(transaction: Transaction) {
   setTransactions((currentTransactions) => [
     ...currentTransactions,
@@ -36,10 +40,25 @@ function Dashboard({ title }: DashboardProps) {
   const [wallets] = useState(initialWallets)
   const [categories] = useState(initialCategories)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingTransaction, setEditingTransaction] =
+  useState<Transaction | null>(null)
   function handleDeleteTransaction(id: number) {
     setTransactions((currentTransactions) =>
       currentTransactions.filter(
         (transaction) => transaction.id !== id
+      )
+    )
+  }
+  function handleEditTransaction(transaction: Transaction) {
+    setEditingTransaction(transaction)
+    setIsModalOpen(true)
+  }
+  function handleUpdateTransaction(updatedTransaction: Transaction) {
+    setTransactions((currentTransactions) =>
+      currentTransactions.map((transaction) =>
+        transaction.id === updatedTransaction.id
+          ? updatedTransaction
+          : transaction
       )
     )
   }
@@ -81,8 +100,10 @@ function Dashboard({ title }: DashboardProps) {
         <TransactionModal
           wallets={wallets}
           categories={categories}
+          editingTransaction={editingTransaction}
           onAddTransaction={handleAddTransaction}
-          onClose={() => setIsModalOpen(false)}
+          onUpdateTransaction={handleUpdateTransaction}
+          onClose={handleCloseModal}
         />
       )}
       <TransactionHistory
@@ -90,7 +111,7 @@ function Dashboard({ title }: DashboardProps) {
         wallets={wallets}
         categories={categories}
         onDeleteTransaction={handleDeleteTransaction}
-        onEditTransaction={() => {}}
+        onEditTransaction={handleEditTransaction}
         onOpenModal={() => setIsModalOpen(true)}
       />
     </section>

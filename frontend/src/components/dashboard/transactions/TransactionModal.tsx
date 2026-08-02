@@ -5,14 +5,18 @@ import type { Transaction } from "../../../types/transaction"
 type TransactionModalProps = {
   wallets: Wallet[]
   categories: Category[]
+  editingTransaction: Transaction | null
   onAddTransaction: (transaction: Transaction) => void
+  onUpdateTransaction: (transaction: Transaction) => void
   onClose: () => void
 }
 
 function TransactionModal({
   wallets,
   categories,
+  editingTransaction,
   onAddTransaction,
+  onUpdateTransaction,
   onClose,
 }: TransactionModalProps){
   return (
@@ -21,7 +25,9 @@ function TransactionModal({
         <TransactionForm
           wallets={wallets}
           categories={categories}
+          editingTransaction={editingTransaction}
           onAddTransaction={onAddTransaction}
+          onUpdateTransaction={onUpdateTransaction}
           onClose={onClose}
         />
       </div>

@@ -1,18 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Wallet } from "../../../types/wallet"
 import type { Category } from "../../../types/category"
 import type { Transaction } from "../../../types/transaction"
 type TransactionFormProps = {
   wallets: Wallet[]
   categories: Category[]
+  editingTransaction: Transaction | null
   onAddTransaction: (transaction: Transaction) => void
+  onUpdateTransaction: (transaction: Transaction) => void
   onClose: () => void
 }
 
 function TransactionForm({
   wallets,
   categories,
+  editingTransaction,
   onAddTransaction,
+  onUpdateTransaction,
   onClose,
 }: TransactionFormProps) {
   const [type, setType] = useState<"income" | "expense">("expense")
@@ -21,6 +25,18 @@ function TransactionForm({
   const [date, setDate] = useState("")
   const [walletId, setWalletId] = useState("")
   const [categoryId, setCategoryId] = useState("")
+  useEffect(() => {
+    if (editingTransaction) {
+      setType(editingTransaction.type)
+      setAmount(String(editingTransaction.amount))
+      setDescription(editingTransaction.description)
+      setDate(
+        editingTransaction.date.toISOString().split("T")[0]
+      )
+      setWalletId(String(editingTransaction.walletId))
+      setCategoryId(String(editingTransaction.categoryId))
+    }
+  }, [editingTransaction])
   const filteredCategories = categories.filter(
     (category) => category.type === type
   )
@@ -45,7 +61,14 @@ function TransactionForm({
       description,
     }
 
-    onAddTransaction(newTransaction)
+    if (editingTransaction) {
+      onUpdateTransaction({
+        ...newTransaction,
+        id: editingTransaction.id,
+      })
+    } else {
+      onAddTransaction(newTransaction)
+    }
     onClose()
     resetForm()
   }
@@ -152,7 +175,7 @@ function TransactionForm({
         </button>
 
         <button type="submit">
-          Ajouter
+          {editingTransaction ? "Modifier" : "Ajouter"}
         </button>
       </div>
     </form>
