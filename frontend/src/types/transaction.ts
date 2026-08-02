@@ -5,7 +5,7 @@ export interface Transaction {
   amount: number
   date: Date
   type: TransactionType
-  category: string
-  wallet: string
+  categoryId: number
+  walletId: number
   description: string
 }
