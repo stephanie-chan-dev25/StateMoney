@@ -1,3 +1,4 @@
+import type { Transaction } from "../../types/transaction"
 import MonthlyExpenses from "./MonthlyExpenses"
 import MonthlyIncome from "./MonthlyIncome"
 import MonthlySavings from "./MonthlySavings"
@@ -26,6 +27,12 @@ function Dashboard({ title }: DashboardProps) {
   const [transactions, setTransactions] = useState(
     initialTransactions
   )
+  function handleAddTransaction(transaction: Transaction) {
+  setTransactions((currentTransactions) => [
+    ...currentTransactions,
+    transaction,
+  ])
+}
   const [wallets] = useState(initialWallets)
   const [categories] = useState(initialCategories)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -74,10 +81,14 @@ function Dashboard({ title }: DashboardProps) {
         <TransactionModal
           wallets={wallets}
           categories={categories}
+          onAddTransaction={handleAddTransaction}
+          onClose={() => setIsModalOpen(false)}
         />
       )}
       <TransactionHistory
         transactions={transactions}
+        wallets={wallets}
+        categories={categories}
         onDeleteTransaction={handleDeleteTransaction}
         onEditTransaction={() => {}}
         onOpenModal={() => setIsModalOpen(true)}

@@ -1,9 +1,13 @@
 import TransactionItem from "./TransactionItem"
 import type { Transaction } from "../../../types/transaction"
 import "./TransactionHistory.css"
+import type { Wallet } from "../../../types/wallet"
+import type { Category } from "../../../types/category"
 
 type TransactionHistoryProps = {
   transactions: Transaction[]
+  wallets: Wallet[]
+  categories: Category[]
   onDeleteTransaction: (id: number) => void
   onEditTransaction: (transaction: Transaction) => void
   onOpenModal: () => void
@@ -11,6 +15,8 @@ type TransactionHistoryProps = {
 
 function TransactionHistory({
   transactions,
+  wallets,
+  categories,
   onDeleteTransaction,
   onEditTransaction,
   onOpenModal,
@@ -46,6 +52,8 @@ function TransactionHistory({
             <TransactionItem
               key={transaction.id}
               transaction={transaction}
+              wallets={wallets}
+              categories={categories}
               onDeleteTransaction={onDeleteTransaction}
               onEditTransaction={onEditTransaction}
             />

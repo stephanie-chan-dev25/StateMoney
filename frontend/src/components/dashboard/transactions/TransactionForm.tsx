@@ -6,12 +6,14 @@ type TransactionFormProps = {
   wallets: Wallet[]
   categories: Category[]
   onAddTransaction: (transaction: Transaction) => void
+  onClose: () => void
 }
 
 function TransactionForm({
   wallets,
   categories,
   onAddTransaction,
+  onClose,
 }: TransactionFormProps) {
   const [type, setType] = useState<"income" | "expense">("expense")
   const [amount, setAmount] = useState("")
@@ -22,8 +24,33 @@ function TransactionForm({
   const filteredCategories = categories.filter(
     (category) => category.type === type
   )
+  function resetForm() {
+    setType("expense")
+    setAmount("")
+    setDescription("")
+    setDate("")
+    setWalletId("")
+    setCategoryId("")
+  }
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+
+    const newTransaction: Transaction = {
+      id: Date.now(),
+      amount: Number(amount),
+      date: new Date(date),
+      type,
+      categoryId: Number(categoryId),
+      walletId: Number(walletId),
+      description,
+    }
+
+    onAddTransaction(newTransaction)
+    onClose()
+    resetForm()
+  }
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <h3>Nouvelle transaction</h3>
 
       <div>
@@ -114,7 +141,13 @@ function TransactionForm({
       </div>
 
       <div>
-        <button type="button">
+        <button
+          type="button"
+          onClick={() => {
+            resetForm()
+            onClose()
+          }}
+        >
           Annuler
         </button>
 
