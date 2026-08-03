@@ -70,11 +70,30 @@ function Dashboard({ title }: DashboardProps) {
   currentMonth,
   currentYear
   )
-  const incomeByCategory = calculateIncomeByCategory(monthlyTransactions)
-  const expensesByCategory = calculateExpensesByCategory(monthlyTransactions)
-  const totalBalance = calculateBalance(transactions)
-  const monthlyIncome = calculateIncome(monthlyTransactions)
-  const monthlyExpenses = calculateExpenses(monthlyTransactions)
+  const incomeByCategory = calculateIncomeByCategory(
+    monthlyTransactions,
+    categories
+  )
+  
+  const expensesByCategory = calculateExpensesByCategory(
+    monthlyTransactions,
+    categories
+  )
+  
+  const totalBalance = calculateBalance(
+    transactions,
+    categories
+  )
+  
+  const monthlyIncome = calculateIncome(
+    monthlyTransactions,
+    categories
+  )
+  
+  const monthlyExpenses = calculateExpenses(
+    monthlyTransactions,
+    categories
+  )
   const monthlySavings = calculateSavings(monthlyIncome, monthlyExpenses)
   
   return (

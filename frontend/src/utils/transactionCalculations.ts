@@ -1,3 +1,4 @@
+import type { Category } from "../types/category"
 import type { Transaction } from "../types/transaction"
 
 export function filterTransactionsByMonth(
@@ -15,27 +16,53 @@ export function filterTransactionsByMonth(
   })
 }
 
-export function calculateIncome(transactions: Transaction[]) {
+function getCategoryType(
+  transaction: Transaction,
+  categories: Category[]
+) {
+  return categories.find(
+    (category) => category.id === transaction.categoryId
+  )?.type
+}
+
+export function calculateIncome(
+  transactions: Transaction[],
+  categories: Category[]
+) {
   return transactions
-    .filter((transaction) => transaction.type === "income")
+    .filter(
+      (transaction) =>
+        getCategoryType(transaction, categories) === "income"
+    )
     .reduce((total, transaction) => total + transaction.amount, 0)
 }
 
-export function calculateExpenses(transactions: Transaction[]) {
+export function calculateExpenses(
+  transactions: Transaction[],
+  categories: Category[]
+) {
   return transactions
-    .filter((transaction) => transaction.type === "expense")
+    .filter(
+      (transaction) =>
+        getCategoryType(transaction, categories) === "expense"
+    )
     .reduce((total, transaction) => total + transaction.amount, 0)
 }
 
-export function calculateSavings(income: number, expenses: number) {
+export function calculateSavings(
+  income: number,
+  expenses: number
+) {
   return income - expenses
 }
 
-export function calculateBalance(transactions: Transaction[]) {
+export function calculateBalance(
+  transactions: Transaction[],
+  categories: Category[]
+) {
   return transactions.reduce((total, transaction) => {
-    return transaction.type === "income"
+    return getCategoryType(transaction, categories) === "income"
       ? total + transaction.amount
       : total - transaction.amount
   }, 0)
 }
-

@@ -23,11 +23,23 @@ function TransactionForm({
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
   const [date, setDate] = useState("")
-  const [walletId, setWalletId] = useState("")
-  const [categoryId, setCategoryId] = useState("")
+  const [walletId, setWalletId] = useState(
+    wallets[0]?.id.toString() ?? ""
+  )
+
+  const [categoryId, setCategoryId] = useState(
+    categories
+      .find((category) => category.type === type)
+      ?.id.toString() ?? ""
+  )
   useEffect(() => {
     if (editingTransaction) {
-      setType(editingTransaction.type)
+      const category = categories.find(
+        (category) =>
+          category.id === editingTransaction.categoryId
+      )
+
+      setType(category?.type ?? "expense")
       setAmount(String(editingTransaction.amount))
       setDescription(editingTransaction.description)
       setDate(
@@ -55,12 +67,11 @@ function TransactionForm({
       id: Date.now(),
       amount: Number(amount),
       date: new Date(date),
-      type,
       categoryId: Number(categoryId),
       walletId: Number(walletId),
       description,
     }
-
+    
     if (editingTransaction) {
       onUpdateTransaction({
         ...newTransaction,
@@ -82,9 +93,20 @@ function TransactionForm({
         <select
           id="type"
           value={type}
-          onChange={(event) =>
-            setType(event.target.value as "income" | "expense")
-          }
+          onChange={(event) => {
+            const newType =
+              event.target.value as "income" | "expense"
+
+            setType(newType)
+
+            const firstCategory = categories.find(
+              (category) => category.type === newType
+            )
+          
+            setCategoryId(
+              firstCategory?.id.toString() ?? ""
+            )
+          }}
         >
           <option value="income">Revenu</option>
           <option value="expense">Dépense</option>

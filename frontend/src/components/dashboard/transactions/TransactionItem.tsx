@@ -49,12 +49,15 @@ function TransactionItem({
   const {
     description,
     amount,
-    type,
     date,
     categoryId,
     walletId
   } = transaction 
-
+  const category = categories.find(
+    (category) => category.id === categoryId
+  )
+  
+  const type = category?.type ?? "expense"
   return (
   <tr className={getTransactionTypeClass(type)}>
     <td>{date.toLocaleDateString("fr-FR")}</td>

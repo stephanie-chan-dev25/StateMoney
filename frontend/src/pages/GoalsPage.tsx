@@ -6,8 +6,12 @@ import "./GoalsPage.css"
 import { useState } from "react"
 import GoalModal from "../components/goals/GoalModal"
 import type { Goal } from "../types/goal"
+import { categories } from "../data/categories"
 function GoalsPage() {
-  const totalBalance = calculateBalance(transactions)
+  const totalBalance = calculateBalance(
+    transactions,
+    categories
+  )
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [goals, setGoals] = useState(initialGoals)
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
