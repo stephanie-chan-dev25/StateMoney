@@ -23,7 +23,8 @@ import { calculateExpensesByCategory } from "../../utils/expenseCalculations"
 import TransactionModal from "./transactions/TransactionModal"
 import { getWallets } from "../../services/walletService"
 import type { Wallet } from "../../types/wallet"
-import { categories as initialCategories } from "../../data/categories"
+import { getCategories } from "../../services/categoryService"
+import type { Category } from "../../types/category"
 import { getTransactions } from "../../services/transactionService"
 type DashboardProps = {
   title: string
@@ -77,7 +78,7 @@ function Dashboard({ title }: DashboardProps) {
     }
   }
   const [wallets, setWallets] = useState<Wallet[]>([])
-  const [categories] = useState(initialCategories)
+  const [categories, setCategories] = useState<Category[]>([])
   useEffect(() => {
     async function loadWallets() {
       try {
@@ -89,6 +90,18 @@ function Dashboard({ title }: DashboardProps) {
     }
   
     loadWallets()
+  }, [])
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories()
+        setCategories(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  
+    loadCategories()
   }, [])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] =

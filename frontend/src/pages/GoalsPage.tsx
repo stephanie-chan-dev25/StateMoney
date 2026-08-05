@@ -1,15 +1,18 @@
 import GoalTable from "../components/goals/GoalTable"
 import { goals as initialGoals } from "../data/goals"
-import { calculateBalance } from "../utils/transactionCalculations";
+import { calculateBalance } from "../utils/transactionCalculations"
 import { useEffect, useState } from "react"
 import type { Transaction } from "../types/transaction"
 import { getTransactions } from "../services/transactionService"
 import "./GoalsPage.css"
 import GoalModal from "../components/goals/GoalModal"
 import type { Goal } from "../types/goal"
-import { categories } from "../data/categories"
+import type { Category } from "../types/category"
+import { getCategories } from "../services/categoryService"
+
 function GoalsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {
     async function loadTransactions() {
@@ -24,16 +27,32 @@ function GoalsPage() {
     loadTransactions()
   }, [])
 
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories()
+        setCategories(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadCategories()
+  }, [])
+
   const totalBalance = calculateBalance(
     transactions,
     categories
   )
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [goals, setGoals] = useState(initialGoals)
-  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
+  const [selectedGoal, setSelectedGoal] =
+    useState<Goal | null>(null)
+
   function handleAddGoal(
-  name: string,
-  targetAmount: number
+    name: string,
+    targetAmount: number
   ) {
     setGoals((currentGoals) => [
       ...currentGoals,
@@ -44,11 +63,15 @@ function GoalsPage() {
       },
     ])
   }
+
   function handleDeleteGoal(id: number) {
     setGoals((currentGoals) =>
-      currentGoals.filter((goal) => goal.id !== id)
+      currentGoals.filter(
+        (goal) => goal.id !== id
+      )
     )
-  } 
+  }
+
   function handleEditGoal(
     id: number,
     name: string,
@@ -66,15 +89,17 @@ function GoalsPage() {
       )
     )
   }
+
   function handleOpenEdit(goal: Goal) {
     setSelectedGoal(goal)
     setIsModalOpen(true)
   }
+
   return (
     <section>
       <header className="goals-header">
         <h2>🎯 Objectifs financiers</h2>
-    
+
         <button
           type="button"
           onClick={() => {
@@ -85,7 +110,8 @@ function GoalsPage() {
           + Nouvel objectif
         </button>
       </header>
-     {isModalOpen && (
+
+      {isModalOpen && (
         <GoalModal
           onClose={() => setIsModalOpen(false)}
           onAddGoal={handleAddGoal}
@@ -93,8 +119,8 @@ function GoalsPage() {
           selectedGoal={selectedGoal}
         />
       )}
-    
-     <GoalTable
+
+      <GoalTable
         goals={goals}
         totalBalance={totalBalance}
         onDeleteGoal={handleDeleteGoal}

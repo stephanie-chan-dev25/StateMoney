@@ -1,70 +1,94 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CategoryTable from "../components/categories/CategoryTable"
 import CategoryModal from "../components/categories/CategoryModal"
-import { categories as initialCategories } from "../data/categories"
 import type { Category } from "../types/category"
+import {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "../services/categoryService"
 
 function CategoriesPage() {
-  const [categories, setCategories] = useState(
-    initialCategories
-  )
-
+  const [categories, setCategories] = useState<Category[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [selectedCategory, setSelectedCategory] =
     useState<Category | null>(null)
 
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await getCategories()
+        setCategories(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
-  function handleAddCategory(
+    loadCategories()
+  }, [])
+
+  async function handleAddCategory(
     name: string,
     type: "income" | "expense"
   ) {
-    setCategories((currentCategories) => [
-      ...currentCategories,
-      {
-        id: currentCategories.length + 1,
+    try {
+      const category = await createCategory({
         name,
         type,
-      },
-    ])
+      })
+
+      setCategories((currentCategories) => [
+        ...currentCategories,
+        category,
+      ])
+    } catch (error) {
+      console.error(error)
+    }
   }
 
+  async function handleDeleteCategory(id: number) {
+    try {
+      await deleteCategory(id)
 
-  function handleDeleteCategory(id: number) {
-    setCategories((currentCategories) =>
-      currentCategories.filter(
-        (category) => category.id !== id
+      setCategories((currentCategories) =>
+        currentCategories.filter(
+          (category) => category.id !== id
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-
-  function handleEditCategory(
+  async function handleEditCategory(
     id: number,
     name: string,
     type: "income" | "expense"
   ) {
-    setCategories((currentCategories) =>
-      currentCategories.map((category) =>
-        category.id === id
-          ? {
-              ...category,
-              name,
-              type,
-            }
-          : category
+    try {
+      const category = await updateCategory(id, {
+        name,
+        type,
+      })
+
+      setCategories((currentCategories) =>
+        currentCategories.map(
+          (currentCategory) =>
+            currentCategory.id === id
+              ? category
+              : currentCategory
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-
-  function handleOpenEdit(
-    category: Category
-  ) {
+  function handleOpenEdit(category: Category) {
     setSelectedCategory(category)
     setIsModalOpen(true)
   }
-
 
   return (
     <section>
@@ -82,7 +106,6 @@ function CategoriesPage() {
         </button>
       </header>
 
-
       {isModalOpen && (
         <CategoryModal
           onClose={() =>
@@ -99,7 +122,6 @@ function CategoriesPage() {
           }
         />
       )}
-
 
       <CategoryTable
         categories={categories}
