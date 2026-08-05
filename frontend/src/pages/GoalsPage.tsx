@@ -1,13 +1,29 @@
 import GoalTable from "../components/goals/GoalTable"
 import { goals as initialGoals } from "../data/goals"
 import { calculateBalance } from "../utils/transactionCalculations";
-import { transactions } from "../data/transactions";
+import { useEffect, useState } from "react"
+import type { Transaction } from "../types/transaction"
+import { getTransactions } from "../services/transactionService"
 import "./GoalsPage.css"
-import { useState } from "react"
 import GoalModal from "../components/goals/GoalModal"
 import type { Goal } from "../types/goal"
 import { categories } from "../data/categories"
 function GoalsPage() {
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+
+  useEffect(() => {
+    async function loadTransactions() {
+      try {
+        const data = await getTransactions()
+        setTransactions(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadTransactions()
+  }, [])
+
   const totalBalance = calculateBalance(
     transactions,
     categories
