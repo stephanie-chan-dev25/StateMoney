@@ -2,7 +2,7 @@ import express from "express"
 import express from "express"
 import cors from "cors"
 import transactionRoutes from "./routes/transactionRoutes"
-
+import walletRoutes from "./routes/walletRoutes"
 const app = express()
 
 app.use(cors())
@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
 })
 
 app.use("/transactions", transactionRoutes)
-
+app.use("/wallets", walletRoutes)
 export default app
 

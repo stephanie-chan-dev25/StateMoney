@@ -2,7 +2,12 @@ import { useEffect, useState } from "react"
 import WalletTable from "../components/wallets/WalletTable"
 import WalletModal from "../components/wallets/WalletModal"
 import type { Wallet } from "../types/wallet"
-import { getWallets } from "../services/walletService"
+import {
+  getWallets,
+  createWallet,
+  updateWallet,
+  deleteWallet,
+} from "../services/walletService"
 
 function WalletsPage() {
   const [wallets, setWallets] = useState<Wallet[]>([])
@@ -22,38 +27,50 @@ function WalletsPage() {
     loadWallets()
   }, [])
 
-  function handleAddWallet(name: string) {
-    setWallets((currentWallets) => [
-      ...currentWallets,
-      {
-        id: currentWallets.length + 1,
-        name,
-      },
-    ])
+  async function handleAddWallet(name: string) {
+    try {
+      const wallet = await createWallet(name)
+
+      setWallets((currentWallets) => [
+        ...currentWallets,
+        wallet,
+      ])
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  function handleDeleteWallet(id: number) {
-    setWallets((currentWallets) =>
-      currentWallets.filter(
-        (wallet) => wallet.id !== id
+  async function handleDeleteWallet(id: number) {
+    try {
+      await deleteWallet(id)
+
+      setWallets((currentWallets) =>
+        currentWallets.filter(
+          (wallet) => wallet.id !== id
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  function handleEditWallet(
+  async function handleEditWallet(
     id: number,
     name: string
   ) {
-    setWallets((currentWallets) =>
-      currentWallets.map((wallet) =>
-        wallet.id === id
-          ? {
-              ...wallet,
-              name,
-            }
-          : wallet
+    try {
+      const wallet = await updateWallet(id, name)
+
+      setWallets((currentWallets) =>
+        currentWallets.map((currentWallet) =>
+          currentWallet.id === id
+            ? wallet
+            : currentWallet
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   function handleOpenEdit(wallet: Wallet) {
