@@ -1,5 +1,4 @@
 import GoalTable from "../components/goals/GoalTable"
-import { goals as initialGoals } from "../data/goals"
 import { calculateBalance } from "../utils/transactionCalculations"
 import { useEffect, useState } from "react"
 import type { Transaction } from "../types/transaction"
@@ -9,35 +8,44 @@ import GoalModal from "../components/goals/GoalModal"
 import type { Goal } from "../types/goal"
 import type { Category } from "../types/category"
 import { getCategories } from "../services/categoryService"
+import {
+  getGoals,
+  createGoal,
+  updateGoal,
+  deleteGoal,
+} from "../services/goalService"
 
 function GoalsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [goals, setGoals] = useState<Goal[]>([])
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedGoal, setSelectedGoal] =
+    useState<Goal | null>(null)
 
   useEffect(() => {
-    async function loadTransactions() {
+    async function loadData() {
       try {
-        const data = await getTransactions()
-        setTransactions(data)
+        const [
+          transactionsData,
+          categoriesData,
+          goalsData,
+        ] = await Promise.all([
+          getTransactions(),
+          getCategories(),
+          getGoals(),
+        ])
+
+        setTransactions(transactionsData)
+        setCategories(categoriesData)
+        setGoals(goalsData)
       } catch (error) {
         console.error(error)
       }
     }
 
-    loadTransactions()
-  }, [])
-
-  useEffect(() => {
-    async function loadCategories() {
-      try {
-        const data = await getCategories()
-        setCategories(data)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    loadCategories()
+    loadData()
   }, [])
 
   const totalBalance = calculateBalance(
@@ -45,49 +53,60 @@ function GoalsPage() {
     categories
   )
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [goals, setGoals] = useState(initialGoals)
-  const [selectedGoal, setSelectedGoal] =
-    useState<Goal | null>(null)
-
-  function handleAddGoal(
+  async function handleAddGoal(
     name: string,
     targetAmount: number
   ) {
-    setGoals((currentGoals) => [
-      ...currentGoals,
-      {
-        id: currentGoals.length + 1,
+    try {
+      const goal = await createGoal({
         name,
         targetAmount,
-      },
-    ])
+      })
+
+      setGoals((currentGoals) => [
+        ...currentGoals,
+        goal,
+      ])
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  function handleDeleteGoal(id: number) {
-    setGoals((currentGoals) =>
-      currentGoals.filter(
-        (goal) => goal.id !== id
+  async function handleDeleteGoal(id: number) {
+    try {
+      await deleteGoal(id)
+
+      setGoals((currentGoals) =>
+        currentGoals.filter(
+          (goal) => goal.id !== id
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  function handleEditGoal(
+  async function handleEditGoal(
     id: number,
     name: string,
     targetAmount: number
   ) {
-    setGoals((currentGoals) =>
-      currentGoals.map((goal) =>
-        goal.id === id
-          ? {
-              ...goal,
-              name,
-              targetAmount,
-            }
-          : goal
+    try {
+      const goal = await updateGoal(id, {
+        name,
+        targetAmount,
+      })
+
+      setGoals((currentGoals) =>
+        currentGoals.map((currentGoal) =>
+          currentGoal.id === id
+            ? goal
+            : currentGoal
+        )
       )
-    )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   function handleOpenEdit(goal: Goal) {
@@ -113,7 +132,9 @@ function GoalsPage() {
 
       {isModalOpen && (
         <GoalModal
-          onClose={() => setIsModalOpen(false)}
+          onClose={() =>
+            setIsModalOpen(false)
+          }
           onAddGoal={handleAddGoal}
           onEditGoal={handleEditGoal}
           selectedGoal={selectedGoal}
