@@ -21,7 +21,8 @@ import "./Dashboard.css"
 import { calculateIncomeByCategory } from "../../utils/incomeCalculations"
 import { calculateExpensesByCategory } from "../../utils/expenseCalculations"
 import TransactionModal from "./transactions/TransactionModal"
-import { wallets as initialWallets } from "../../data/wallets"
+import { getWallets } from "../../services/walletService"
+import type { Wallet } from "../../types/wallet"
 import { categories as initialCategories } from "../../data/categories"
 import { getTransactions } from "../../services/transactionService"
 type DashboardProps = {
@@ -75,8 +76,20 @@ function Dashboard({ title }: DashboardProps) {
       alert("Impossible d'ajouter la transaction.")
     }
   }
-  const [wallets] = useState(initialWallets)
+  const [wallets, setWallets] = useState<Wallet[]>([])
   const [categories] = useState(initialCategories)
+  useEffect(() => {
+    async function loadWallets() {
+      try {
+        const data = await getWallets()
+        setWallets(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  
+    loadWallets()
+  }, [])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] =
   useState<Transaction | null>(null)

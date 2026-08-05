@@ -1,13 +1,26 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import WalletTable from "../components/wallets/WalletTable"
 import WalletModal from "../components/wallets/WalletModal"
-import { wallets as initialWallets } from "../data/wallets"
 import type { Wallet } from "../types/wallet"
+import { getWallets } from "../services/walletService"
 
 function WalletsPage() {
-  const [wallets, setWallets] = useState(initialWallets)
+  const [wallets, setWallets] = useState<Wallet[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null)
+
+  useEffect(() => {
+    async function loadWallets() {
+      try {
+        const data = await getWallets()
+        setWallets(data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadWallets()
+  }, [])
 
   function handleAddWallet(name: string) {
     setWallets((currentWallets) => [
@@ -18,6 +31,7 @@ function WalletsPage() {
       },
     ])
   }
+
   function handleDeleteWallet(id: number) {
     setWallets((currentWallets) =>
       currentWallets.filter(
@@ -25,6 +39,7 @@ function WalletsPage() {
       )
     )
   }
+
   function handleEditWallet(
     id: number,
     name: string
@@ -40,10 +55,12 @@ function WalletsPage() {
       )
     )
   }
+
   function handleOpenEdit(wallet: Wallet) {
     setSelectedWallet(wallet)
     setIsModalOpen(true)
   }
+
   return (
     <section>
       <header>
