@@ -3,18 +3,36 @@ import {
   createGoal,
   updateGoal,
   deleteGoal,
+  findGoalByUser,
 } from "../repositories/goalRepository"
 
-export function getAllGoals() {
-  return findAllGoals()
+
+export function getAllGoals(
+  userId: number
+) {
+  return findAllGoals(userId)
 }
+
 
 export function addGoal(goal: {
   name: string
   targetAmount: number
+  userId: number
 }) {
   return createGoal(goal)
 }
+
+
+export function getGoalByUser(
+  goalId: number,
+  userId: number
+) {
+  return findGoalByUser(
+    goalId,
+    userId
+  )
+}
+
 
 export function editGoal(
   id: number,
@@ -26,6 +44,9 @@ export function editGoal(
   return updateGoal(id, goal)
 }
 
-export function removeGoal(id: number) {
+
+export function removeGoal(
+  id: number
+) {
   return deleteGoal(id)
 }

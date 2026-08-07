@@ -1,0 +1,14 @@
+ALTER TABLE goals
+ADD COLUMN user_id INTEGER;
+
+UPDATE goals
+SET user_id = 3;
+
+ALTER TABLE goals
+ALTER COLUMN user_id SET NOT NULL;
+
+ALTER TABLE goals
+ADD CONSTRAINT fk_goal_user
+FOREIGN KEY (user_id)
+REFERENCES users(id)
+ON DELETE CASCADE;
