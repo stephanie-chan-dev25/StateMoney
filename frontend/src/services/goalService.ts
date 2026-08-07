@@ -1,9 +1,12 @@
 import type { Goal } from "../types/goal"
+import { apiFetch } from "../utils/api"
+
 
 const API_URL = "http://localhost:3000/goals"
 
+
 export async function getGoals(): Promise<Goal[]> {
-  const response = await fetch(API_URL)
+  const response = await apiFetch(API_URL)
 
   if (!response.ok) {
     throw new Error("Erreur récupération objectifs")
@@ -18,19 +21,20 @@ export async function getGoals(): Promise<Goal[]> {
   }))
 }
 
+
 export async function createGoal(
   goal: Omit<Goal, "id">
 ): Promise<Goal> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: goal.name,
-      targetAmount: goal.targetAmount,
-    }),
-  })
+  const response = await apiFetch(
+    API_URL,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name: goal.name,
+        targetAmount: goal.targetAmount,
+      }),
+    }
+  )
 
   if (!response.ok) {
     throw new Error("Erreur création objectif")
@@ -45,17 +49,15 @@ export async function createGoal(
   }
 }
 
+
 export async function updateGoal(
   id: number,
   goal: Omit<Goal, "id">
 ): Promise<Goal> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         name: goal.name,
         targetAmount: goal.targetAmount,
@@ -76,10 +78,11 @@ export async function updateGoal(
   }
 }
 
+
 export async function deleteGoal(
   id: number
 ): Promise<void> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "DELETE",

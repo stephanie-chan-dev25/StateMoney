@@ -1,9 +1,12 @@
 import type { Wallet } from "../types/wallet"
+import { apiFetch } from "../utils/api"
+
 
 const API_URL = "http://localhost:3000/wallets"
 
+
 export async function getWallets(): Promise<Wallet[]> {
-  const response = await fetch(API_URL)
+  const response = await apiFetch(API_URL)
 
   if (!response.ok) {
     throw new Error("Erreur récupération wallets")
@@ -12,18 +15,19 @@ export async function getWallets(): Promise<Wallet[]> {
   return response.json()
 }
 
+
 export async function createWallet(
   name: string
 ): Promise<Wallet> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-    }),
-  })
+  const response = await apiFetch(
+    API_URL,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+      }),
+    }
+  )
 
   if (!response.ok) {
     throw new Error("Erreur création wallet")
@@ -32,17 +36,15 @@ export async function createWallet(
   return response.json()
 }
 
+
 export async function updateWallet(
   id: number,
   name: string
 ): Promise<Wallet> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         name,
       }),
@@ -56,10 +58,11 @@ export async function updateWallet(
   return response.json()
 }
 
+
 export async function deleteWallet(
   id: number
 ): Promise<void> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "DELETE",

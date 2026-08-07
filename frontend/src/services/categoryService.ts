@@ -1,9 +1,12 @@
 import type { Category } from "../types/category"
+import { apiFetch } from "../utils/api"
+
 
 const API_URL = "http://localhost:3000/categories"
 
+
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(API_URL)
+  const response = await apiFetch(API_URL)
 
   if (!response.ok) {
     throw new Error("Erreur récupération catégories")
@@ -12,16 +15,17 @@ export async function getCategories(): Promise<Category[]> {
   return response.json()
 }
 
+
 export async function createCategory(
   category: Omit<Category, "id">
 ): Promise<Category> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(category),
-  })
+  const response = await apiFetch(
+    API_URL,
+    {
+      method: "POST",
+      body: JSON.stringify(category),
+    }
+  )
 
   if (!response.ok) {
     throw new Error("Erreur création catégorie")
@@ -30,17 +34,15 @@ export async function createCategory(
   return response.json()
 }
 
+
 export async function updateCategory(
   id: number,
   category: Omit<Category, "id">
 ): Promise<Category> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(category),
     }
   )
@@ -52,10 +54,11 @@ export async function updateCategory(
   return response.json()
 }
 
+
 export async function deleteCategory(
   id: number
 ): Promise<void> {
-  const response = await fetch(
+  const response = await apiFetch(
     `${API_URL}/${id}`,
     {
       method: "DELETE",
