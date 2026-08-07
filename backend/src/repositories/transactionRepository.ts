@@ -1,4 +1,23 @@
 import pool from "../config/database"
+export async function findTransactionByUser(
+  transactionId: number,
+  userId: number
+) {
+  const result = await pool.query(
+    `
+    SELECT transactions.*
+    FROM transactions
+    JOIN wallets
+      ON wallets.id = transactions.wallet_id
+    WHERE
+      transactions.id = $1
+      AND wallets.user_id = $2
+    `,
+    [transactionId, userId]
+  )
+
+  return result.rows[0]
+}
 export async function updateTransaction(
   id: number,
   transaction: {
@@ -43,7 +62,7 @@ export async function deleteTransaction(id: number) {
   )
 }
 
-export async function findAllTransactions() {
+export async function findAllTransactions(userId: number) {
   const result = await pool.query(
     `
     SELECT
@@ -61,8 +80,10 @@ export async function findAllTransactions() {
       ON categories.id = transactions.category_id
     JOIN wallets
       ON wallets.id = transactions.wallet_id
+    WHERE wallets.user_id = $1
     ORDER BY transactions.date DESC
-    `
+    `,
+    [userId]
   )
 
   return result.rows

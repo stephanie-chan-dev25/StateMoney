@@ -1,19 +1,26 @@
 import type { Request, Response } from "express"
+
 import {
   getAllCategories,
   addCategory,
   editCategory,
   removeCategory,
+  getCategoryByUser,
 } from "../services/categoryService"
+
 
 export async function getCategories(
   req: Request,
   res: Response
 ) {
   try {
-    const categories = await getAllCategories()
+    const categories =
+      await getAllCategories(
+        req.user!.id
+      )
 
     res.json(categories)
+
   } catch (error) {
     console.error(error)
 
@@ -23,14 +30,20 @@ export async function getCategories(
   }
 }
 
+
 export async function createCategory(
   req: Request,
   res: Response
 ) {
   try {
-    const category = await addCategory(req.body)
+    const category =
+      await addCategory({
+        ...req.body,
+        userId: req.user!.id,
+      })
 
     res.status(201).json(category)
+
   } catch (error) {
     console.error(error)
 
@@ -40,6 +53,7 @@ export async function createCategory(
   }
 }
 
+
 export async function updateCategory(
   req: Request,
   res: Response
@@ -47,12 +61,29 @@ export async function updateCategory(
   try {
     const id = Number(req.params.id)
 
-    const category = await editCategory(
-      id,
-      req.body
-    )
+    const existingCategory =
+      await getCategoryByUser(
+        id,
+        req.user!.id
+      )
+
+    if (!existingCategory) {
+      res.status(403).json({
+        message:
+          "Cette catégorie ne vous appartient pas",
+      })
+
+      return
+    }
+
+    const category =
+      await editCategory(
+        id,
+        req.body
+      )
 
     res.json(category)
+
   } catch (error) {
     console.error(error)
 
@@ -62,6 +93,7 @@ export async function updateCategory(
   }
 }
 
+
 export async function deleteCategory(
   req: Request,
   res: Response
@@ -69,9 +101,25 @@ export async function deleteCategory(
   try {
     const id = Number(req.params.id)
 
+    const existingCategory =
+      await getCategoryByUser(
+        id,
+        req.user!.id
+      )
+
+    if (!existingCategory) {
+      res.status(403).json({
+        message:
+          "Cette catégorie ne vous appartient pas",
+      })
+
+      return
+    }
+
     await removeCategory(id)
 
     res.status(204).send()
+
   } catch (error) {
     console.error(error)
 

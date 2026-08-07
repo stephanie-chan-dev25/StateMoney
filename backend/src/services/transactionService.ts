@@ -2,9 +2,18 @@ import {
   findAllTransactions,
   createTransaction,
   updateTransaction,
-  deleteTransaction
+  deleteTransaction,
+  findTransactionByUser
 } from "../repositories/transactionRepository"
-
+export async function getTransactionByUser(
+  transactionId: number,
+  userId: number
+) {
+  return await findTransactionByUser(
+    transactionId,
+    userId
+  )
+}
 export async function editTransaction(
   id: number,
   transaction: {
@@ -30,6 +39,6 @@ export async function addTransaction(transaction: {
   return await createTransaction(transaction)
 }
 
-export async function getAllTransactions() {
-  return await findAllTransactions()
+export async function getAllTransactions(userId: number) {
+  return await findAllTransactions(userId)
 }

@@ -1,5 +1,22 @@
 import pool from "../config/database"
 
+export async function findWalletByUser(
+  walletId: number,
+  userId: number
+) {
+  const result = await pool.query(
+    `
+    SELECT *
+    FROM wallets
+    WHERE id = $1
+    AND user_id = $2
+    `,
+    [walletId, userId]
+  )
+
+  return result.rows[0]
+}
+
 export async function findAllWallets() {
   const result = await pool.query(
     `

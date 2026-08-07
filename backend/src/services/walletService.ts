@@ -5,6 +5,15 @@ import {
   deleteWallet,
 } from "../repositories/walletRepository"
 
+import { findWalletByUser } from "../repositories/walletRepository"
+
+export async function getWalletByUser(
+  walletId: number,
+  userId: number
+) {
+  return await findWalletByUser(walletId, userId)
+}
+
 export function getAllWallets() {
   return findAllWallets()
 }

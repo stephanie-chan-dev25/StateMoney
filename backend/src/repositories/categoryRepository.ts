@@ -1,6 +1,8 @@
 import pool from "../config/database"
 
-export async function findAllCategories() {
+export async function findAllCategories(
+  userId: number
+) {
   const result = await pool.query(
     `
     SELECT
@@ -8,8 +10,10 @@ export async function findAllCategories() {
       name,
       type
     FROM categories
+    WHERE user_id = $1
     ORDER BY id
-    `
+    `,
+    [userId]
   )
 
   return result.rows
@@ -18,20 +22,40 @@ export async function findAllCategories() {
 export async function createCategory(category: {
   name: string
   type: string
+  userId: number
 }) {
   const result = await pool.query(
     `
     INSERT INTO categories (
       name,
-      type
+      type,
+      user_id
     )
-    VALUES ($1, $2)
+    VALUES ($1, $2, $3)
     RETURNING *
     `,
     [
       category.name,
       category.type,
+      category.userId,
     ]
+  )
+
+  return result.rows[0]
+}
+
+export async function findCategoryByUser(
+  categoryId: number,
+  userId: number
+) {
+  const result = await pool.query(
+    `
+    SELECT *
+    FROM categories
+    WHERE id = $1
+      AND user_id = $2
+    `,
+    [categoryId, userId]
   )
 
   return result.rows[0]
