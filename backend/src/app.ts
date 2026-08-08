@@ -1,5 +1,4 @@
 import express from "express"
-import express from "express"
 import cors from "cors"
 import transactionRoutes from "./routes/transactionRoutes"
 import walletRoutes from "./routes/walletRoutes"

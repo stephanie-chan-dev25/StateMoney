@@ -12,6 +12,7 @@ import {
 } from "../services/walletService"
 import { getTransactions } from "../services/transactionService"
 import { getCategories } from "../services/categoryService"
+import "./WalletsPage.css"
 
 
 function WalletsPage() {

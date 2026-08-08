@@ -1,7 +1,7 @@
 function TransactionsPage() {
   return (
     <main>
-      <h2>Mes transactions</h2>
+      <h2>Page en cours de développement</h2>
     </main>
   )
 }
