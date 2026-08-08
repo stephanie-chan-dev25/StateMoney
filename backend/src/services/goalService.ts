@@ -39,14 +39,23 @@ export function editGoal(
   goal: {
     name: string
     targetAmount: number
-  }
+  },
+  userId: number
 ) {
-  return updateGoal(id, goal)
+  return updateGoal(
+    id,
+    goal,
+    userId
+  )
 }
 
 
 export function removeGoal(
-  id: number
+  id: number,
+  userId: number
 ) {
-  return deleteGoal(id)
+  return deleteGoal(
+    id,
+    userId
+  )
 }

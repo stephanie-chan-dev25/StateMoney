@@ -1,4 +1,4 @@
-import { getToken } from "../services/authService"
+import { getToken, removeToken } from "../services/authService"
 
 
 export async function apiFetch(
@@ -7,7 +7,7 @@ export async function apiFetch(
 ) {
   const token = getToken()
 
-  return fetch(
+  const response = await fetch(
     url,
     {
       ...options,
@@ -20,4 +20,11 @@ export async function apiFetch(
       },
     }
   )
+
+  if (response.status === 401) {
+    removeToken()
+    window.location.href = "/login"
+  }
+
+  return response
 }

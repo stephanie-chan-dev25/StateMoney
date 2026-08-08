@@ -3,32 +3,58 @@ import {
   createWallet,
   updateWallet,
   deleteWallet,
+  findWalletByUser,
 } from "../repositories/walletRepository"
 
-import { findWalletByUser } from "../repositories/walletRepository"
 
 export async function getWalletByUser(
   walletId: number,
   userId: number
 ) {
-  return await findWalletByUser(walletId, userId)
+  return await findWalletByUser(
+    walletId,
+    userId
+  )
 }
 
-export function getAllWallets() {
-  return findAllWallets()
+
+export function getAllWallets(
+  userId: number
+) {
+  return findAllWallets(userId)
 }
 
-export function addWallet(name: string) {
-  return createWallet(name)
+
+export function addWallet(
+  name: string,
+  userId: number
+) {
+  return createWallet(
+    name,
+    userId
+  )
 }
+
 
 export function editWallet(
   id: number,
-  name: string
+  name: string,
+  userId: number
 ) {
-  return updateWallet(id, name)
+  return updateWallet(
+    id,
+    name,
+    userId
+  )
 }
 
-export function removeWallet(id: number) {
-  return deleteWallet(id)
+
+export function removeWallet(
+  id: number,
+  userId: number
+) {
+  return deleteWallet(
+    id,
+    userId
+  )
 }

@@ -20,7 +20,6 @@ export async function getGoals(
       )
 
     res.json(goals)
-
   } catch (error) {
     console.error(error)
 
@@ -36,14 +35,33 @@ export async function createGoal(
   res: Response
 ) {
   try {
+    const {
+      name,
+      targetAmount,
+    } = req.body
+
+    if (
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof targetAmount !== "number" ||
+      !Number.isFinite(targetAmount) ||
+      targetAmount <= 0
+    ) {
+      res.status(400).json({
+        message: "Données objectif invalides",
+      })
+
+      return
+    }
+
     const goal =
       await addGoal({
-        ...req.body,
+        name: name.trim(),
+        targetAmount,
         userId: req.user!.id,
       })
 
     res.status(201).json(goal)
-
   } catch (error) {
     console.error(error)
 
@@ -59,7 +77,29 @@ export async function updateGoal(
   res: Response
 ) {
   try {
-    const id = Number(req.params.id)
+    const id = Number(
+      req.params.id
+    )
+
+    const {
+      name,
+      targetAmount,
+    } = req.body
+
+    if (
+      !Number.isInteger(id) ||
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof targetAmount !== "number" ||
+      !Number.isFinite(targetAmount) ||
+      targetAmount <= 0
+    ) {
+      res.status(400).json({
+        message: "Données objectif invalides",
+      })
+
+      return
+    }
 
     const existingGoal =
       await getGoalByUser(
@@ -79,11 +119,14 @@ export async function updateGoal(
     const goal =
       await editGoal(
         id,
-        req.body
+        {
+          name: name.trim(),
+          targetAmount,
+        },
+        req.user!.id
       )
 
     res.json(goal)
-
   } catch (error) {
     console.error(error)
 
@@ -99,7 +142,17 @@ export async function deleteGoal(
   res: Response
 ) {
   try {
-    const id = Number(req.params.id)
+    const id = Number(
+      req.params.id
+    )
+
+    if (!Number.isInteger(id)) {
+      res.status(400).json({
+        message: "Identifiant objectif invalide",
+      })
+
+      return
+    }
 
     const existingGoal =
       await getGoalByUser(
@@ -116,10 +169,12 @@ export async function deleteGoal(
       return
     }
 
-    await removeGoal(id)
+    await removeGoal(
+      id,
+      req.user!.id
+    )
 
     res.status(204).send()
-
   } catch (error) {
     console.error(error)
 

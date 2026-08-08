@@ -20,7 +20,6 @@ export async function getCategories(
       )
 
     res.json(categories)
-
   } catch (error) {
     console.error(error)
 
@@ -36,14 +35,32 @@ export async function createCategory(
   res: Response
 ) {
   try {
+    const {
+      name,
+      type,
+    } = req.body
+
+    if (
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof type !== "string" ||
+      !type.trim()
+    ) {
+      res.status(400).json({
+        message: "Données catégorie invalides",
+      })
+
+      return
+    }
+
     const category =
       await addCategory({
-        ...req.body,
+        name: name.trim(),
+        type: type.trim(),
         userId: req.user!.id,
       })
 
     res.status(201).json(category)
-
   } catch (error) {
     console.error(error)
 
@@ -59,7 +76,28 @@ export async function updateCategory(
   res: Response
 ) {
   try {
-    const id = Number(req.params.id)
+    const id = Number(
+      req.params.id
+    )
+
+    const {
+      name,
+      type,
+    } = req.body
+
+    if (
+      !Number.isInteger(id) ||
+      typeof name !== "string" ||
+      !name.trim() ||
+      typeof type !== "string" ||
+      !type.trim()
+    ) {
+      res.status(400).json({
+        message: "Données catégorie invalides",
+      })
+
+      return
+    }
 
     const existingCategory =
       await getCategoryByUser(
@@ -79,11 +117,14 @@ export async function updateCategory(
     const category =
       await editCategory(
         id,
-        req.body
+        {
+          name: name.trim(),
+          type: type.trim(),
+        },
+        req.user!.id
       )
 
     res.json(category)
-
   } catch (error) {
     console.error(error)
 
@@ -99,7 +140,17 @@ export async function deleteCategory(
   res: Response
 ) {
   try {
-    const id = Number(req.params.id)
+    const id = Number(
+      req.params.id
+    )
+
+    if (!Number.isInteger(id)) {
+      res.status(400).json({
+        message: "Identifiant catégorie invalide",
+      })
+
+      return
+    }
 
     const existingCategory =
       await getCategoryByUser(
@@ -116,10 +167,12 @@ export async function deleteCategory(
       return
     }
 
-    await removeCategory(id)
+    await removeCategory(
+      id,
+      req.user!.id
+    )
 
     res.status(204).send()
-
   } catch (error) {
     console.error(error)
 

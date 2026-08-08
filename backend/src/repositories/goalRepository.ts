@@ -6,13 +6,13 @@ export async function findAllGoals(
 ) {
   const result = await pool.query(
     `
-    SELECT
-      id,
-      name,
-      target_amount
-    FROM goals
-    WHERE user_id = $1
-    ORDER BY id
+      SELECT
+        id,
+        name,
+        target_amount
+      FROM goals
+      WHERE user_id = $1
+      ORDER BY id
     `,
     [userId]
   )
@@ -28,13 +28,13 @@ export async function createGoal(goal: {
 }) {
   const result = await pool.query(
     `
-    INSERT INTO goals (
-      name,
-      target_amount,
-      user_id
-    )
-    VALUES ($1, $2, $3)
-    RETURNING *
+      INSERT INTO goals (
+        name,
+        target_amount,
+        user_id
+      )
+      VALUES ($1, $2, $3)
+      RETURNING *
     `,
     [
       goal.name,
@@ -53,10 +53,10 @@ export async function findGoalByUser(
 ) {
   const result = await pool.query(
     `
-    SELECT *
-    FROM goals
-    WHERE id = $1
-    AND user_id = $2
+      SELECT *
+      FROM goals
+      WHERE id = $1
+      AND user_id = $2
     `,
     [
       goalId,
@@ -73,21 +73,24 @@ export async function updateGoal(
   goal: {
     name: string
     targetAmount: number
-  }
+  },
+  userId: number
 ) {
   const result = await pool.query(
     `
-    UPDATE goals
-    SET
-      name = $1,
-      target_amount = $2
-    WHERE id = $3
-    RETURNING *
+      UPDATE goals
+      SET
+        name = $1,
+        target_amount = $2
+      WHERE id = $3
+      AND user_id = $4
+      RETURNING *
     `,
     [
       goal.name,
       goal.targetAmount,
       id,
+      userId,
     ]
   )
 
@@ -96,13 +99,18 @@ export async function updateGoal(
 
 
 export async function deleteGoal(
-  id: number
+  id: number,
+  userId: number
 ) {
   await pool.query(
     `
-    DELETE FROM goals
-    WHERE id = $1
+      DELETE FROM goals
+      WHERE id = $1
+      AND user_id = $2
     `,
-    [id]
+    [
+      id,
+      userId,
+    ]
   )
 }

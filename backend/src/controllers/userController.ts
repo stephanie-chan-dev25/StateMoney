@@ -4,14 +4,42 @@ import {
   addUser,
   getUserByEmail,
 } from "../services/userService"
-
+import bcrypt from "bcrypt"
 export async function register(
   req: Request,
   res: Response
 ) {
   try {
     const { email, password } = req.body
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email.trim() ||
+      !password.trim()
+    ) {
+      res.status(400).json({
+        message: "Email et mot de passe obligatoires",
+      })
+    
+      return
+    }
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+    if (!emailRegex.test(email)) {
+      res.status(400).json({
+        message: "Format d'email invalide",
+      })
+    
+      return
+    }
+    if (password.length < 8) {
+      res.status(400).json({
+        message: "Le mot de passe doit contenir au moins 8 caractères",
+      })
+    
+      return
+    }
     const existingUser =
       await getUserByEmail(email)
 
@@ -44,7 +72,19 @@ export async function login(
 ) {
   try {
     const { email, password } = req.body
-
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email.trim() ||
+      !password.trim()
+    ) {
+      res.status(400).json({
+        message: "Email et mot de passe obligatoires",
+      })
+    
+      return
+    }
+    
     const user = await getUserByEmail(email)
 
     if (!user) {
@@ -55,11 +95,16 @@ export async function login(
       return
     }
 
-    if (user.password !== password) {
+    const passwordIsValid = await bcrypt.compare(
+      password,
+      user.password
+    )
+
+    if (!passwordIsValid) {
       res.status(401).json({
         message: "Email ou mot de passe incorrect",
       })
-
+    
       return
     }
 

@@ -1,4 +1,5 @@
 import { Router } from "express"
+
 import {
   getWallets,
   createWallet,
@@ -6,14 +7,35 @@ import {
   deleteWallet,
 } from "../controllers/walletController"
 
+import { authMiddleware } from "../middleware/authMiddleware"
+
+
 const router = Router()
 
-router.get("/", getWallets)
 
-router.post("/", createWallet)
+router.get(
+  "/",
+  authMiddleware,
+  getWallets
+)
 
-router.put("/:id", updateWallet)
+router.post(
+  "/",
+  authMiddleware,
+  createWallet
+)
 
-router.delete("/:id", deleteWallet)
+router.put(
+  "/:id",
+  authMiddleware,
+  updateWallet
+)
+
+router.delete(
+  "/:id",
+  authMiddleware,
+  deleteWallet
+)
+
 
 export default router

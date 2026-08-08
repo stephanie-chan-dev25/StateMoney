@@ -7,12 +7,16 @@ export default function RegisterPage() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
 
   async function handleRegister(
     event: React.FormEvent
   ) {
     event.preventDefault()
+
+    setError("")
+
     const response = await fetch(
       "http://localhost:3000/auth/register",
       {
@@ -27,10 +31,13 @@ export default function RegisterPage() {
       }
     )
 
+    const data = await response.json()
+
     if (!response.ok) {
-      throw new Error(
-        "Erreur inscription"
+      setError(
+        data.message || "Erreur lors de l'inscription"
       )
+      return
     }
 
     navigate("/login")
@@ -40,6 +47,10 @@ export default function RegisterPage() {
   return (
     <form onSubmit={handleRegister}>
       <h1>Inscription</h1>
+
+      {error && (
+        <p>{error}</p>
+      )}
 
       <input
         type="email"

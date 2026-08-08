@@ -39,12 +39,23 @@ export function editCategory(
   category: {
     name: string
     type: string
-  }
+  },
+  userId: number
 ) {
-  return updateCategory(id, category)
+  return updateCategory(
+    id,
+    category,
+    userId
+  )
 }
 
 
-export function removeCategory(id: number) {
-  return deleteCategory(id)
+export function removeCategory(
+  id: number,
+  userId: number
+) {
+  return deleteCategory(
+    id,
+    userId
+  )
 }
