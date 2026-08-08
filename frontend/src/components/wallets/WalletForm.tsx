@@ -1,17 +1,14 @@
 import { useState } from "react"
 import type { Wallet } from "../../types/wallet"
+import "./WalletForm.css"
+
 type WalletFormProps = {
   onClose: () => void
-
-  onAddWallet: (
-    name: string
-  ) => void
-
+  onAddWallet: (name: string) => void
   onEditWallet: (
     id: number,
     name: string
   ) => void
-
   selectedWallet: Wallet | null
 }
 
@@ -22,61 +19,76 @@ function WalletForm({
   selectedWallet,
 }: WalletFormProps) {
   const [name, setName] = useState(
-      selectedWallet?.name ?? ""
-    )
+    selectedWallet?.name ?? ""
+  )
+
+  function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault()
+
+    if (name.trim() === "") {
+      return
+    }
+
+    if (selectedWallet) {
+      onEditWallet(
+        selectedWallet.id,
+        name.trim()
+      )
+    } else {
+      onAddWallet(name.trim())
+    }
+
+    setName("")
+    onClose()
+  }
 
   return (
     <form
-      onSubmit={(event) => {
-        event.preventDefault()
-
-        if (name.trim() === "") {
-          return
-        }
-
-        if (selectedWallet) {
-          onEditWallet(
-            selectedWallet.id,
-            name
-          )
-        } else {
-          onAddWallet(name)
-        }
-        
-        setName("")
-        
-        onClose()
-      }}
+      className="wallet-form"
+      onSubmit={handleSubmit}
     >
       <h2>
-      {selectedWallet
-        ? "Modifier le portefeuille"
-        : "Nouveau portefeuille"}
-    </h2>
+        {selectedWallet
+          ? "Modifier le portefeuille"
+          : "Nouveau portefeuille"}
+      </h2>
 
-      <label htmlFor="name">
-        Nom
-      </label>
+      <div className="wallet-form-field">
+        <label htmlFor="name">
+          Nom
+        </label>
 
-      <input
-        id="name"
-        type="text"
-        value={name}
-        onChange={(event) =>
-          setName(event.target.value)
-        }
-      />
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(event) =>
+            setName(event.target.value)
+          }
+          autoFocus
+        />
+      </div>
 
-      <button
-        type="button"
-        onClick={onClose}
-      >
-        Annuler
-      </button>
-
-      <button type="submit">
-          {selectedWallet ? "Modifier" : "Ajouter"}
+      <div className="wallet-form-actions">
+        <button
+          type="button"
+          className="wallet-form-cancel"
+          onClick={onClose}
+        >
+          Annuler
         </button>
+
+        <button
+          type="submit"
+          className="wallet-form-submit"
+        >
+          {selectedWallet
+            ? "Modifier"
+            : "Ajouter"}
+        </button>
+      </div>
     </form>
   )
 }

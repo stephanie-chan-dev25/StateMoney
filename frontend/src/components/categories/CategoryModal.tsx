@@ -1,5 +1,6 @@
 import type { Category } from "../../types/category"
 import CategoryForm from "./CategoryForm"
+import "./CategoryModal.css"
 
 type CategoryModalProps = {
   onClose: () => void

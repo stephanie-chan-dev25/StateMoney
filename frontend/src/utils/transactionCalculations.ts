@@ -66,3 +66,23 @@ export function calculateBalance(
       : total - transaction.amount
   }, 0)
 }
+
+export function calculateWalletBalance(
+  walletId: number,
+  transactions: Transaction[],
+  categories: Category[]
+) {
+  return transactions
+    .filter(
+      (transaction) =>
+        transaction.walletId === walletId
+    )
+    .reduce((total, transaction) => {
+      return getCategoryType(
+        transaction,
+        categories
+      ) === "income"
+        ? total + transaction.amount
+        : total - transaction.amount
+    }, 0)
+}

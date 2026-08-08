@@ -1,5 +1,6 @@
 import type { Goal } from "../../types/goal"
 import GoalForm from "./GoalForm"
+import "./GoalModal.css"
 type GoalModalProps = {
   onClose: () => void
   onAddGoal: (

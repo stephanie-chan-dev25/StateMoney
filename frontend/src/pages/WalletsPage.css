@@ -1,14 +1,16 @@
-.goals-page {
+.wallets-page {
   padding: 24px;
 }
 
-.goals-header {
+.wallets-page-header {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 24px;
 }
 
-.goals-header button {
+.wallets-page-header button {
   padding: 10px 16px;
 
   border: none;
@@ -23,16 +25,21 @@
   cursor: pointer;
 }
 
-.goals-header button:hover {
+.wallets-page-header button:hover {
   background: #374151;
 }
 
 @media (max-width: 768px) {
-  .goals-page {
+  .wallets-page {
     padding: 16px;
   }
 
-  .goals-header button {
+  .wallets-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .wallets-page-header button {
     width: 100%;
   }
 }

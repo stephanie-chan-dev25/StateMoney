@@ -1,0 +1,54 @@
+.wallet-table {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.wallet-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wallet-table th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wallet-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #111827;
+}
+
+.wallet-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.wallet-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wallet-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+
+  border: none;
+  background: none;
+
+  color: #111827;
+  cursor: pointer;
+}
+
+.wallet-action-button:hover {
+  color: #374151;
+}

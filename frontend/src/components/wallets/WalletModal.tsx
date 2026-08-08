@@ -1,6 +1,7 @@
 import WalletForm from "./WalletForm"
 
 import type { Wallet } from "../../types/wallet"
+import "./WalletModal.css"
 
 type WalletModalProps = {
   onClose: () => void

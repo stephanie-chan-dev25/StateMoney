@@ -2,17 +2,30 @@ import { useEffect, useState } from "react"
 import WalletTable from "../components/wallets/WalletTable"
 import WalletModal from "../components/wallets/WalletModal"
 import type { Wallet } from "../types/wallet"
+import type { Transaction } from "../types/transaction"
+import type { Category } from "../types/category"
 import {
   getWallets,
   createWallet,
   updateWallet,
   deleteWallet,
 } from "../services/walletService"
+import { getTransactions } from "../services/transactionService"
+import { getCategories } from "../services/categoryService"
+
 
 function WalletsPage() {
   const [wallets, setWallets] = useState<Wallet[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null)
+  const [transactions, setTransactions] =
+    useState<Transaction[]>([])
+  const [categories, setCategories] =
+    useState<Category[]>([])
+
+  const [isModalOpen, setIsModalOpen] =
+    useState(false)
+
+  const [selectedWallet, setSelectedWallet] =
+    useState<Wallet | null>(null)
 
   useEffect(() => {
     async function loadWallets() {
@@ -27,7 +40,30 @@ function WalletsPage() {
     loadWallets()
   }, [])
 
-  async function handleAddWallet(name: string) {
+  useEffect(() => {
+    async function loadWalletData() {
+      try {
+        const [
+          transactionData,
+          categoryData,
+        ] = await Promise.all([
+          getTransactions(),
+          getCategories(),
+        ])
+
+        setTransactions(transactionData)
+        setCategories(categoryData)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    loadWalletData()
+  }, [])
+
+  async function handleAddWallet(
+    name: string
+  ) {
     try {
       const wallet = await createWallet(name)
 
@@ -40,7 +76,9 @@ function WalletsPage() {
     }
   }
 
-  async function handleDeleteWallet(id: number) {
+  async function handleDeleteWallet(
+    id: number
+  ) {
     try {
       await deleteWallet(id)
 
@@ -59,13 +97,17 @@ function WalletsPage() {
     name: string
   ) {
     try {
-      const wallet = await updateWallet(id, name)
+      const wallet = await updateWallet(
+        id,
+        name
+      )
 
       setWallets((currentWallets) =>
-        currentWallets.map((currentWallet) =>
-          currentWallet.id === id
-            ? wallet
-            : currentWallet
+        currentWallets.map(
+          (currentWallet) =>
+            currentWallet.id === id
+              ? wallet
+              : currentWallet
         )
       )
     } catch (error) {
@@ -73,16 +115,16 @@ function WalletsPage() {
     }
   }
 
-  function handleOpenEdit(wallet: Wallet) {
+  function handleOpenEdit(
+    wallet: Wallet
+  ) {
     setSelectedWallet(wallet)
     setIsModalOpen(true)
   }
 
   return (
-    <section>
-      <header>
-        <h2>💼 Portefeuilles</h2>
-
+    <section className="wallets-page">
+      <header className="wallets-page-header">
         <button
           type="button"
           onClick={() => {
@@ -96,7 +138,9 @@ function WalletsPage() {
 
       {isModalOpen && (
         <WalletModal
-          onClose={() => setIsModalOpen(false)}
+          onClose={() =>
+            setIsModalOpen(false)
+          }
           onAddWallet={handleAddWallet}
           onEditWallet={handleEditWallet}
           selectedWallet={selectedWallet}
@@ -105,6 +149,8 @@ function WalletsPage() {
 
       <WalletTable
         wallets={wallets}
+        transactions={transactions}
+        categories={categories}
         onDeleteWallet={handleDeleteWallet}
         onEditWallet={handleOpenEdit}
       />

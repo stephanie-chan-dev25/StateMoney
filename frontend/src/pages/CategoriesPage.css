@@ -1,14 +1,14 @@
-.goals-page {
+.categories-page {
   padding: 24px;
 }
 
-.goals-header {
+.categories-page-header {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 24px;
 }
 
-.goals-header button {
+.categories-page-header button {
   padding: 10px 16px;
 
   border: none;
@@ -23,16 +23,16 @@
   cursor: pointer;
 }
 
-.goals-header button:hover {
+.categories-page-header button:hover {
   background: #374151;
 }
 
 @media (max-width: 768px) {
-  .goals-page {
+  .categories-page {
     padding: 16px;
   }
 
-  .goals-header button {
+  .categories-page-header button {
     width: 100%;
   }
 }

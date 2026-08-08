@@ -115,10 +115,8 @@ function GoalsPage() {
   }
 
   return (
-    <section>
+    <section className="goals-page">
       <header className="goals-header">
-        <h2>🎯 Objectifs financiers</h2>
-
         <button
           type="button"
           onClick={() => {

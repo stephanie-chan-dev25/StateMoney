@@ -1,4 +1,4 @@
-.goal-modal-overlay {
+.category-modal-overlay {
   position: fixed;
   inset: 0;
 
@@ -14,7 +14,7 @@
   z-index: 1000;
 }
 
-.goal-modal {
+.category-modal {
   width: 100%;
   max-width: 420px;
 
@@ -28,7 +28,7 @@
 }
 
 @media (max-width: 480px) {
-  .goal-modal {
+  .category-modal {
     padding: 20px;
   }
 }

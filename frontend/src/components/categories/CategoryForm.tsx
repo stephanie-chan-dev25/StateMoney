@@ -1,5 +1,6 @@
 import { useState } from "react"
 import type { Category } from "../../types/category"
+import "./CategoryForm.css"
 
 type CategoryFormProps = {
   onClose: () => void
@@ -32,7 +33,7 @@ function CategoryForm({
   )
 
   function handleSubmit(
-    event: React.FormEvent
+    event: React.FormEvent<HTMLFormElement>
   ) {
     event.preventDefault()
 
@@ -40,82 +41,97 @@ function CategoryForm({
       return
     }
 
+    const trimmedName = name.trim()
+
     if (selectedCategory) {
       onEditCategory(
         selectedCategory.id,
-        name,
+        trimmedName,
         type
       )
     } else {
       onAddCategory(
-        name,
+        trimmedName,
         type
       )
     }
 
     setName("")
     setType("expense")
-
     onClose()
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      className="category-form"
+      onSubmit={handleSubmit}
+    >
       <h2>
         {selectedCategory
           ? "Modifier la catégorie"
           : "Nouvelle catégorie"}
       </h2>
 
-      <label htmlFor="name">
-        Nom
-      </label>
+      <div className="category-form-field">
+        <label htmlFor="name">
+          Nom
+        </label>
 
-      <input
-        id="name"
-        type="text"
-        value={name}
-        onChange={(event) =>
-          setName(event.target.value)
-        }
-      />
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(event) =>
+            setName(event.target.value)
+          }
+          autoFocus
+        />
+      </div>
 
-      <label htmlFor="type">
-        Type
-      </label>
+      <div className="category-form-field">
+        <label htmlFor="type">
+          Type
+        </label>
 
-      <select
-        id="type"
-        value={type}
-        onChange={(event) =>
-          setType(
-            event.target.value as
-              | "income"
-              | "expense"
-          )
-        }
-      >
-        <option value="income">
-          Revenu
-        </option>
+        <select
+          id="type"
+          value={type}
+          onChange={(event) =>
+            setType(
+              event.target.value as
+                | "income"
+                | "expense"
+            )
+          }
+        >
+          <option value="income">
+            Revenu
+          </option>
 
-        <option value="expense">
-          Dépense
-        </option>
-      </select>
+          <option value="expense">
+            Dépense
+          </option>
+        </select>
+      </div>
 
-      <button
-        type="button"
-        onClick={onClose}
-      >
-        Annuler
-      </button>
+      <div className="category-form-actions">
+        <button
+          type="button"
+          className="category-form-cancel"
+          onClick={onClose}
+        >
+          Annuler
+        </button>
 
-      <button type="submit">
-        {selectedCategory
-          ? "Modifier"
-          : "Ajouter"}
-      </button>
+        <button
+          type="submit"
+          className="category-form-submit"
+        >
+          {selectedCategory
+            ? "Modifier"
+            : "Ajouter"}
+        </button>
+      </div>
     </form>
   )
 }

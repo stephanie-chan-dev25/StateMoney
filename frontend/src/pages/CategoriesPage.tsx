@@ -8,6 +8,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../services/categoryService"
+import "./CategoriesPage.css"
 
 function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -91,10 +92,8 @@ function CategoriesPage() {
   }
 
   return (
-    <section>
-      <header>
-        <h2>🏷️ Catégories</h2>
-
+    <section className="categories-page">
+      <header className="categories-page-header">
         <button
           type="button"
           onClick={() => {

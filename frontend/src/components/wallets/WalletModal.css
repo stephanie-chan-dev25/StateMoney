@@ -1,4 +1,4 @@
-.goal-modal-overlay {
+.wallet-modal-overlay {
   position: fixed;
   inset: 0;
 
@@ -14,7 +14,7 @@
   z-index: 1000;
 }
 
-.goal-modal {
+.wallet-modal {
   width: 100%;
   max-width: 420px;
 
@@ -28,7 +28,7 @@
 }
 
 @media (max-width: 480px) {
-  .goal-modal {
+  .wallet-modal {
     padding: 20px;
   }
 }

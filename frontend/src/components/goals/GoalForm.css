@@ -1,0 +1,80 @@
+.goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.goal-form h2 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.goal-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.goal-form-field label {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.goal-form-field input {
+  width: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #111827;
+
+  font-size: 14px;
+}
+
+.goal-form-field input:focus {
+  outline: none;
+  border-color: #111827;
+  box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.08);
+}
+
+.goal-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.goal-form-actions button {
+  padding: 10px 16px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.goal-form-cancel {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+}
+
+.goal-form-cancel:hover {
+  background: #f9fafb;
+}
+
+.goal-form-submit {
+  border: none;
+  background: #111827;
+  color: #ffffff;
+}
+
+.goal-form-submit:hover {
+  background: #374151;
+}

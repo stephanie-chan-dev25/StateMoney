@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-
+import { Link, useNavigate } from "react-router-dom"
+import "./RegisterPage.css"
 
 export default function RegisterPage() {
   const navigate = useNavigate()
@@ -9,9 +9,8 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
 
-
   async function handleRegister(
-    event: React.FormEvent
+    event: React.FormEvent<HTMLFormElement>
   ) {
     event.preventDefault()
 
@@ -35,7 +34,8 @@ export default function RegisterPage() {
 
     if (!response.ok) {
       setError(
-        data.message || "Erreur lors de l'inscription"
+        data.message ||
+          "Erreur lors de l'inscription"
       )
       return
     }
@@ -43,36 +43,65 @@ export default function RegisterPage() {
     navigate("/login")
   }
 
-
   return (
-    <form onSubmit={handleRegister}>
-      <h1>Inscription</h1>
+    <main className="auth-page">
+      <section className="auth-card">
+        <h1>Inscription</h1>
 
-      {error && (
-        <p>{error}</p>
-      )}
+        {error && (
+          <p className="auth-error">
+            {error}
+          </p>
+        )}
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
+        <form onSubmit={handleRegister}>
+          <div className="auth-field">
+            <label htmlFor="email">
+              Email
+            </label>
 
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
+            <input
+              id="email"
+              type="email"
+              placeholder="Votre email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+            />
+          </div>
 
-      <button type="submit">
-        S'inscrire
-      </button>
-    </form>
+          <div className="auth-field">
+            <label htmlFor="password">
+              Mot de passe
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Votre mot de passe"
+              value={password}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="auth-submit"
+          >
+            S'inscrire
+          </button>
+
+          <p className="auth-link">
+            Vous avez déjà un compte ?{" "}
+            <Link to="/login">
+              Se connecter
+            </Link>
+          </p>
+        </form>
+      </section>
+    </main>
   )
 }
