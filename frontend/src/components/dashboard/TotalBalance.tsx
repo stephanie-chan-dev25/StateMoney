@@ -6,7 +6,7 @@ type TotalBalanceProps = {
 function TotalBalance({ balance }: TotalBalanceProps) {
   return (
     <section className="dashboard-card">
-      <h3>💰 Solde total</h3>
+      <h3>Solde total</h3>
       <p>{balance.toLocaleString("fr-FR")} Ar</p>
     </section>
   )

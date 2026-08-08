@@ -1,40 +1,22 @@
-import { Link, useNavigate } from "react-router-dom"
-import { removeToken } from "../services/authService"
+import { useLocation } from "react-router-dom"
 
 
 function Header() {
-  const navigate = useNavigate()
+  const location = useLocation()
 
-
-  function handleLogout() {
-    removeToken()
-    navigate("/login")
+  const pageTitles: Record<string, string> = {
+    "/": "Tableau de bord",
+    "/wallets": "Portefeuilles",
+    "/transactions": "Transactions récurrentes",
+    "/categories": "Catégories",
+    "/goals": "Objectifs",
   }
 
+  const title = pageTitles[location.pathname] ?? "StateMoney"
 
   return (
-    <header>
-      <h1>Bienvenue sur StateMoney</h1>
-
-      <nav>
-        <Link to="/">Tableau de bord</Link>
-        {" | "}
-        <Link to="/wallets">Portefeuilles</Link>
-        {" | "}
-        <Link to="/transactions">Transactions</Link>
-        {" | "}
-        <Link to="/categories">Catégories</Link>
-        {" | "}
-        <Link to="/goals">Objectifs</Link>
-        {" | "}
-
-        <button
-          type="button"
-          onClick={handleLogout}
-        >
-          Déconnexion
-        </button>
-      </nav>
+    <header className="header">
+      <h1>{title}</h1>
     </header>
   )
 }

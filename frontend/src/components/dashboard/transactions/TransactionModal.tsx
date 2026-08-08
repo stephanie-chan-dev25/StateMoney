@@ -2,6 +2,7 @@ import TransactionForm from "./TransactionForm"
 import type { Wallet } from "../../../types/wallet"
 import type { Category } from "../../../types/category"
 import type { Transaction } from "../../../types/transaction"
+import "./TransactionModal.css"
 type TransactionModalProps = {
   wallets: Wallet[]
   categories: Category[]

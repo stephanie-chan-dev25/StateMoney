@@ -188,7 +188,6 @@ function Dashboard({ title }: DashboardProps) {
   
   return (
     <section className="dashboard">
-      <h2>{title}</h2>
 
       <TotalBalance balance={totalBalance} />
 

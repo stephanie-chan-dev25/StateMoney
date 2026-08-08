@@ -23,16 +23,17 @@ function TransactionHistory({
 }: TransactionHistoryProps) {
   return (
     <section className="transaction-history">
-      <div className="transaction-history-header">
-        <h3>📜 Historique des transactions</h3>
-        
-        <button
-          type="button"
-          onClick={onOpenModal}
-        >
-          + Nouvelle transaction
-        </button>
-      </div>
+
+    <div className="transaction-history-header">
+      <h2>Historique des transactions</h2>
+
+      <button
+        type="button"
+        onClick={onOpenModal}
+      >
+        + Nouvelle transaction
+      </button>
+    </div>
 
       <table>
         <thead>
