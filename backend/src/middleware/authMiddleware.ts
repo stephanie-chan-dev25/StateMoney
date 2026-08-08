@@ -12,25 +12,31 @@ export function authMiddleware(
     res.status(401).json({
       message: "Token manquant",
     })
-
     return
   }
 
-  const token = authHeader.split(" ")[1]
+  const [type, token] = authHeader.split(" ")
+
+  if (type !== "Bearer" || !token) {
+    res.status(401).json({
+      message: "Format du token invalide",
+    })
+    return
+  }
 
   try {
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET as string
     )
-    
+
     if (typeof decoded === "object" && decoded !== null) {
       req.user = {
         id: decoded.id as number,
         email: decoded.email as string,
       }
     }
-    
+
     next()
   } catch (error) {
     res.status(401).json({
