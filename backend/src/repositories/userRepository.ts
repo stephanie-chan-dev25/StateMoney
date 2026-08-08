@@ -1,5 +1,6 @@
 import pool from "../config/database"
 
+
 export async function findUserByEmail(
   email: string
 ) {
@@ -18,6 +19,7 @@ export async function findUserByEmail(
   return result.rows[0]
 }
 
+
 export async function createUser(user: {
   email: string
   password: string
@@ -31,8 +33,7 @@ export async function createUser(user: {
     VALUES ($1, $2)
     RETURNING
       id,
-      email,
-      created_at
+      email
     `,
     [
       user.email,
@@ -43,6 +44,7 @@ export async function createUser(user: {
   return result.rows[0]
 }
 
+
 export async function findUserById(
   id: number
 ) {
@@ -50,8 +52,7 @@ export async function findUserById(
     `
     SELECT
       id,
-      email,
-      created_at
+      email
     FROM users
     WHERE id = $1
     `,

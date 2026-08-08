@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout"
 import CategoriesPage from "./pages/CategoriesPage"
 import GoalsPage from "./pages/GoalsPage"
 import LoginPage from "./pages/LoginPage"
+import RegisterPage from "./pages/RegisterPage"
 
 
 function App() {
@@ -16,6 +17,10 @@ function App() {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
 
         <Route element={<MainLayout />}>
