@@ -2,7 +2,7 @@ import type { Goal } from "../types/goal"
 import { apiFetch } from "../utils/api"
 
 
-const API_URL = "http://localhost:3000/goals"
+const API_URL = `${import.meta.env.VITE_API_URL}/goals`
 
 
 export async function getGoals(): Promise<Goal[]> {

@@ -18,7 +18,7 @@ export default function LoginPage() {
     setError("")
 
     const response = await fetch(
-      "http://localhost:3000/auth/login",
+      `${import.meta.env.VITE_API_URL}/auth/login`,
       {
         method: "POST",
         headers: {

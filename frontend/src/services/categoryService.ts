@@ -2,7 +2,7 @@ import type { Category } from "../types/category"
 import { apiFetch } from "../utils/api"
 
 
-const API_URL = "http://localhost:3000/categories"
+const API_URL = `${import.meta.env.VITE_API_URL}/categories`
 
 
 export async function getCategories(): Promise<Category[]> {

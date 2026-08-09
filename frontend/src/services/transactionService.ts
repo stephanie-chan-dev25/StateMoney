@@ -1,10 +1,11 @@
 import type { Transaction } from "../types/transaction"
 import { apiFetch } from "../utils/api"
+const API_URL = `${import.meta.env.VITE_API_URL}/transactions`
 export async function updateTransaction(
   transaction: Transaction
 ) {
   const response = await apiFetch(
-    `http://localhost:3000/transactions/${transaction.id}`,
+    `${API_URL}/${transaction.id}`,
     {
       method: "PUT",
       headers: {
@@ -28,7 +29,7 @@ export async function updateTransaction(
 }
 export async function deleteTransaction(id: number) {
   const response = await apiFetch(
-    `http://localhost:3000/transactions/${id}`,
+    `${API_URL}/${id}`,
     {
       method: "DELETE",
     }
@@ -39,7 +40,7 @@ export async function deleteTransaction(id: number) {
   }
 }
 
-const API_URL = "http://localhost:3000/transactions"
+
 
 export async function getTransactions(): Promise<Transaction[]> {
   const response = await apiFetch(API_URL)
@@ -63,7 +64,7 @@ export async function createTransaction(
   transaction: Omit<Transaction, "id">
 ) {
   const response = await apiFetch(
-    "http://localhost:3000/transactions",
+    API_URL,
     {
       method: "POST",
       headers: {

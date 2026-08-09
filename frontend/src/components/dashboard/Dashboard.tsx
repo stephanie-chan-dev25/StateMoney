@@ -26,11 +26,8 @@ import type { Wallet } from "../../types/wallet"
 import { getCategories } from "../../services/categoryService"
 import type { Category } from "../../types/category"
 import { getTransactions } from "../../services/transactionService"
-type DashboardProps = {
-  title: string
-}
 
-function Dashboard({ title }: DashboardProps) {
+function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   useEffect(() => {
     async function loadTransactions() {

@@ -2,7 +2,7 @@ import type { Wallet } from "../types/wallet"
 import { apiFetch } from "../utils/api"
 
 
-const API_URL = "http://localhost:3000/wallets"
+const API_URL = `${import.meta.env.VITE_API_URL}/wallets`
 
 
 export async function getWallets(): Promise<Wallet[]> {
