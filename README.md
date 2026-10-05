@@ -267,18 +267,6 @@ Cette fonctionnalité permet de simplifier le suivi des revenus et dépenses ré
 
 ---
 
-# 🎯 Objectifs du projet
-Être capable de créer une interface non-bloquante, réactive et dynamique.
-
-Apprendre :
-
-- Bases de React : Introduction, Lifecycle, Virtual DOM et ES, Virtual DOM, Hooks, Microservice API REST, Backend express, interaction avec une base données
-- Typescript : Introduction & configuration, Types,
-- Tests au niveau du front-end : JEST, Cypress
-
-Ajouter ce projet dans son portfolio
----
-
 # 🚀 Améliorations futures possibles
 
 Évolutions possibles :
