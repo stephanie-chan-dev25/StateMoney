@@ -2,7 +2,7 @@
 
 ## 📌 Description
 
-StateMoney est une application de gestion financière personnelle qui aide les utilisateurs à suivre leurs revenus, dépenses et objectifs d’épargne. Elle permet de gérer plusieurs portefeuilles, d’analyser les habitudes financières et d’automatiser les transactions récurrentes grâce à une interface moderne et intuitive.
+StateMoney est une application de gestion financière personnelle qui aide les utilisateurs à suivre leurs revenus, dépenses et objectifs d’épargne. Elle permet de gérer plusieurs portefeuilles et d’automatiser les transactions récurrentes.
 
 ---
 
