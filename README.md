@@ -90,6 +90,8 @@ Le tableau de bord affiche :
 
 Vue globale de l'argent disponible dans l'ensemble des portefeuilles.
 
+L'argent disponible est réparti par portefeuille.
+
 ---
 
 ### 📥 Revenus du mois
